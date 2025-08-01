@@ -131,7 +131,14 @@ def test_이메일이_있는_경우에는_이메일_발송(booking_scheduler_wit
     assert mail_mock.send_mail_count == 1
 
 def test_현재날짜가_일요일인_경우_예약불가_예외처리():
-    pass
+    #arrange
+    booking_scheduler = SundayBookingScheduler(CAPACITY_PER_HOUR)
+    schedule = Schedule(ON_THE_HOUR , UNDER_CAPACITY , CUSTOMER)
+
+    #act and assert
+    with pytest.raises(ValueError):
+        booking_scheduler.add_schedule(schedule)
+
 
 def test_현재날짜가_일요일이_아닌경우_예약가능():
     pass
