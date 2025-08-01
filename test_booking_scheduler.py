@@ -12,20 +12,22 @@ CUSTOMER = Customer("Fake name", "010-1234-5678")
 UNDER_CAPACITY = 1
 CAPACITY_PER_HOUR = 3
 
-def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가():
+@pytest.fixture
+def booking_scheduler():
+    return BookingScheduler(CAPACITY_PER_HOUR)
+
+def test_예약은_정시에만_가능하다_정시가_아닌경우_예약불가(booking_scheduler):
     #arrange
     schedule = Schedule(NOT_ON_THE_HOUR,UNDER_CAPACITY,CUSTOMER)
-    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
 
     #act and asser
     with pytest.raises(ValueError):
         booking_scheduler.add_schedule(schedule)
 
 
-def test_예약은_정시에만_가능하다_정시인_경우_예약가능():
+def test_예약은_정시에만_가능하다_정시인_경우_예약가능(booking_scheduler):
     #arrange
     schedule = Schedule(ON_THE_HOUR,UNDER_CAPACITY,CUSTOMER)
-    booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
 
     #act
     booking_scheduler.add_schedule(schedule)
