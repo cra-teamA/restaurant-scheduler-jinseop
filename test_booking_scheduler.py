@@ -92,30 +92,28 @@ def test_예약완료시_SMS는_무조건_발송(booking_scheduler_with_sms_mock
     #assert
     assert sms_mock.send_called
 
-def test_이메일이_없는_경우에는_이메일_미발송(booking_scheduler):
+def test_이메일이_없는_경우에는_이메일_미발송(booking_scheduler_with_mail_mock):
     #arrange
-    mail_sender = TestableMailSender()
-    booking_scheduler.set_mail_sender(mail_sender)
+    booking_scheduler , mail_mock = booking_scheduler_with_mail_mock
     schedule = Schedule(ON_THE_HOUR , UNDER_CAPACITY , CUSTOMER)
 
     #act
     booking_scheduler.add_schedule(schedule)
 
     #assert
-    assert mail_sender.send_mail_count == 0
+    assert mail_mock.send_mail_count == 0
 
 
-def test_이메일이_있는_경우에는_이메일_발송(booking_scheduler):
+def test_이메일이_있는_경우에는_이메일_발송(booking_scheduler_with_mail_mock):
     # arrange
-    mail_sender = TestableMailSender()
-    booking_scheduler.set_mail_sender(mail_sender)
+    booking_scheduler , mail_mock = booking_scheduler_with_mail_mock
     schedule = Schedule(ON_THE_HOUR, UNDER_CAPACITY, CUSTOMER_WITH_MAIL)
 
     # act
     booking_scheduler.add_schedule(schedule)
 
     # assert
-    assert mail_sender.send_mail_count == 1
+    assert mail_mock.send_mail_count == 1
 
 def test_현재날짜가_일요일인_경우_예약불가_예외처리():
     pass
