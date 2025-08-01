@@ -45,6 +45,7 @@ def booking_scheduler_with_sms_mock():
 
     return booking_scheduler , testable_sms_sender
 
+
 @pytest.fixture
 def booking_scheduler_with_mail_mock():
     booking_scheduler = BookingScheduler(CAPACITY_PER_HOUR)
