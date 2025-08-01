@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime , timedelta
 
 import pytest
 
@@ -37,6 +37,7 @@ def test_예약은_정시에만_가능하다_정시인_경우_예약가능(booki
 
 
 def test_시간대별_인원제한이_있다_같은_시간대에_Capacity_초과할_경우_예외발생(booking_scheduler):
+    #arrange
     schedule=Schedule(ON_THE_HOUR,CAPACITY_PER_HOUR,CUSTOMER)
     booking_scheduler.add_schedule(schedule)
 
@@ -46,8 +47,21 @@ def test_시간대별_인원제한이_있다_같은_시간대에_Capacity_초과
         booking_scheduler.add_schedule(new_schedule)
 
 
-def test_시간대별_인원제한이_있다_같은_시간대가_다르면_Capacity_차있어도_스케쥴_추가_성공():
-    pass
+def test_시간대별_인원제한이_있다_같은_시간대가_다르면_Capacity_차있어도_스케쥴_추가_성공(booking_scheduler):
+    #arrange
+    schedule = Schedule(ON_THE_HOUR, CAPACITY_PER_HOUR, CUSTOMER)
+    booking_scheduler.add_schedule(schedule)
+
+    #act
+    different_hour = ON_THE_HOUR + timedelta(hours=1)
+    new_schedule = Schedule(different_hour , UNDER_CAPACITY , CUSTOMER)
+    booking_scheduler.add_schedule(new_schedule)
+
+    #assert
+    assert booking_scheduler.has_schedule(schedule)
+    assert booking_scheduler.has_schedule(new_schedule)
+
+
 
 def test_예약완료시_SMS는_무조건_발송():
     pass
