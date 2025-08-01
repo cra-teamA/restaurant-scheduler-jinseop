@@ -61,8 +61,6 @@ def test_시간대별_인원제한이_있다_같은_시간대가_다르면_Capac
     assert booking_scheduler.has_schedule(schedule)
     assert booking_scheduler.has_schedule(new_schedule)
 
-
-
 def test_예약완료시_SMS는_무조건_발송():
     pass
 
