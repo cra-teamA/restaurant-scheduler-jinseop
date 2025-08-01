@@ -14,6 +14,21 @@ CUSTOMER_WITH_MAIL = Customer("Fake name","010-1234-5678","test@test.com")
 UNDER_CAPACITY = 1
 CAPACITY_PER_HOUR = 3
 
+class SundayBookingScheduler(BookingScheduler):
+    def __init(self,capacity_per_hour):
+        super().__init__(capacity_per_hour)
+
+    def get_now(self):
+        return datetime.strptime("2021/03/28 17:00","%Y/%m/%d %H:%M")
+
+class MondayBookingScheduler(BookingScheduler):
+    def __init(self,capacity_per_hour):
+        super().__init__(capacity_per_hour)
+
+    def get_now(self):
+        return datetime.strptime("2024/06/03 17:00","%Y/%m/%d %H:%M")
+
+
 @pytest.fixture
 def booking_scheduler():
     return BookingScheduler(CAPACITY_PER_HOUR)
