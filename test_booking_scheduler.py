@@ -5,7 +5,7 @@ import pytest
 from schedule import Customer, Schedule
 from communication import SmsSender, MailSender
 from booking_scheduler import BookingScheduler
-from test_communication import TestableSmsSender
+from test_communication import TestableSmsSender, TestableMailSender
 
 NOT_ON_THE_HOUR = datetime.strptime("2021/03/26 09:05", "%Y/%m/%d %H:%M")
 ON_THE_HOUR = datetime.strptime("2021/03/26 09:00", "%Y/%m/%d %H:%M")
@@ -83,8 +83,18 @@ def test_예약완료시_SMS는_무조건_발송(booking_scheduler_with_sms_mock
     #assert
     assert sms_mock.send_called
 
-def test_이메일이_없는_경우에는_이메일_미발송():
-    pass
+def test_이메일이_없는_경우에는_이메일_미발송(booking_scheduler):
+    #arrange
+    mail_sender = TestableMailSender()
+    booking_scheduler.set_mail_sender(mail_sender)
+    schedule = Schedule(ON_THE_HOUR , UNDER_CAPACITY , CUSTOMER)
+
+    #act
+    booking_scheduler.add_schedule(schedule)
+
+    #assert
+    assert mail_sender.send_mail_count == 0
+
 
 def test_이메일이_있는_경우에는_이메일_발송():
     pass
